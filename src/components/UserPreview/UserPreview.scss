@@ -1,0 +1,20 @@
+.UserPreview {
+  display: flex;
+  border: solid 0.1rem;
+  margin: 1rem;
+  padding: 0.5rem;
+  width: auto;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+
+  &:visited{
+    color: black;
+  }
+
+  img {
+    width: 5rem;
+  }
+
+}
