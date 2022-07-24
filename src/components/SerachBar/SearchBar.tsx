@@ -3,11 +3,13 @@ import './SearchBar.scss';
 
 type SearchBarProps = {
   onChangeHandler: (event: ChangeEvent<HTMLInputElement>) => void,
-  placeholder: string
+  placeholder: string,
+  defaultValue?: string | null
 }
 
-export const SearchBar = ({ onChangeHandler, placeholder }: SearchBarProps): JSX.Element => {
+export const SearchBar = ({ onChangeHandler, placeholder, defaultValue }: SearchBarProps): JSX.Element => {
   return <>
-    <input onChange={onChangeHandler} className={'SearchBar'} placeholder={placeholder} />
+    <input onChange={onChangeHandler} className={'SearchBar'} placeholder={placeholder}
+           defaultValue={defaultValue ? defaultValue : ''} />
   </>;
 };

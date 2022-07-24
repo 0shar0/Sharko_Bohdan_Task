@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getUserData, getUserRepos } from '../../api/gitHubApi';
 import { Loader } from '../../components/Loader/Loader';
 import { ReposPreview } from '../../components/ReposPreview/ReposPreview';
@@ -16,7 +16,7 @@ export default (): JSX.Element => {
   const repos = useSelector(selectRepos);
   const [userRepos, setUserRepos] = useState<ReposType[]>(repos[userLogin as string]);
   const [filteredRepos, setFilteredRepos] = useState<ReposType[]>();
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const user = useSelector(selectUser);
 
   const reformatDate = (date: Date): string => {
@@ -38,8 +38,8 @@ export default (): JSX.Element => {
   useEffect(() => {
     if (user.login !== userLogin) {
       dispatch(setUser(null));
-      getUserData(userLogin as string).then(userData => dispatch(setUser(userData))).catch((e) => {
-        setError(e);
+      getUserData(userLogin as string).then(userData => dispatch(setUser(userData))).catch(() => {
+        navigate('/404');
       });
     }
     if (!userRepos) {
@@ -53,7 +53,7 @@ export default (): JSX.Element => {
     setFilteredRepos(userRepos);
   }, [userRepos]);
 
-  const userPage = user && userRepos ? <div className="UserPage">
+  return user && userRepos ? <div className="UserPage">
     <div className="InfoContainer">
       <img alt={user.login} src={user.avatar_url} />
       <div>
@@ -69,6 +69,4 @@ export default (): JSX.Element => {
     <SearchBar onChangeHandler={onSearch} placeholder="Search for User`s Repositories" />
     {filteredRepos?.map(repo => <ReposPreview key={repo.id} repo={repo} />)}
   </div> : <div><Loader /></div>;
-
-  return error ? <Navigate to={'/404'} /> : userPage;
 };
