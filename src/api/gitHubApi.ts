@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/core';
 
 const octokit = new Octokit({
-  auth: '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'
+  auth: process.env.REACT_APP_GITHUB_ACCESS_TOKEN
 });
 
 export const searchUsers = async (name: string) => {
